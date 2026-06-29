@@ -45,3 +45,17 @@ export interface ProfileDetailResponse {
     user_profile: FullUserProfile;
   };
 }
+
+export interface SavedProfile extends UserProfileSummary {
+  platform: Platform;
+  addedAt: string;
+}
+
+export interface CustomList {
+  id: string;
+  name: string;
+  description?: string;
+  profiles: SavedProfile[];
+  createdAt: string;
+}
+

@@ -8,7 +8,18 @@ export async function loadProfileByUsername(
   username: string
 ): Promise<ProfileDetailResponse | null> {
   const path = `../assets/data/profiles/${username}.json`;
-  const loader = profileModules[path];
+  let loader = profileModules[path];
+
+  if (!loader) {
+    // Try case-insensitive lookup
+    const targetKey = username.toLowerCase() + ".json";
+    const matchedKey = Object.keys(profileModules).find((key) =>
+      key.toLowerCase().endsWith(`/${targetKey}`)
+    );
+    if (matchedKey) {
+      loader = profileModules[matchedKey];
+    }
+  }
 
   if (!loader) {
     return null;

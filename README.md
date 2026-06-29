@@ -1,80 +1,86 @@
-# Wobb Frontend Assignment
+# InfluencerVibe - Creator Discovery Platform
 
-A starter influencer search application built with **React**, **TypeScript**, **Vite**, and **Tailwind CSS**. This project is intentionally left in a rough-but-working state for candidates to improve.
+A modern, high-performance web application designed to help brands discover top influencers across Instagram, YouTube, and TikTok, analyze creator metrics, and curate custom persistent lists.
 
-## Getting Started
+---
+
+## 🚀 Key Improvements & Features Implemented
+
+### 1. 🐛 Bug Fixes & Code Corrections
+- **Case-Insensitive Search**: Resolved filtering issues in `src/utils/dataHelpers.ts` where username matches were case-sensitive while full names were case-insensitive. Implemented clean handling for missing/null fields.
+- **Engagement Rate Calculation**: Fixed math calculation bug in `src/pages/ProfileDetailPage.tsx` where rates were multiplied by `10000` instead of `100`.
+- **Misassigned Analytics**: Fixed metric binding bug on the detail page where engagement rate was erroneously displayed under the "Total Engagements" header.
+- **Responsive Layout Cleanup**: Removed rigid, fixed-width CSS constraints (`w-[700px]`) from creator cards to ensure responsive layout on all device sizes (mobile to desktop).
+- **Profile Loader Robustness**: Enhanced `loadProfileByUsername` with fallback case-insensitive matching for local profile JSON definitions.
+
+### 2. ⚡ State Management: React Context to Zustand Migration
+- Replaced basic context patterns with a unified **Zustand store** (`src/store/useListStore.ts`).
+- Integrated Zustand's `persist` middleware to automatically synchronize saved collections and creator lists with browser `localStorage`.
+- Store features include:
+  - Multi-list collection management (create, rename, delete custom lists).
+  - Cross-platform creator saving with timestamping.
+  - Duplicate prevention within lists.
+  - Global reactive indicators for total saved creators across the platform.
+
+### 3. 🎯 Complete "Select Profile & Add to List" Feature
+- **Interactive Add-to-List Modal (`AddToListModal.tsx`)**: Modal interface on cards and detail pages allowing users to select or quickly create custom lists to save creators.
+- **Saved Lists Manager Drawer (`ListDrawer.tsx`)**: Slide-over drawer accessible from the top navigation bar to view saved creator profiles, manage collections, and remove items.
+
+### 4. 🎨 Modern UI/UX Redesign
+- **Glassmorphism Theme System**: Tailored CSS design tokens with ambient radial gradients, backdrop blur effects, and polished typography.
+- **Platform Branding**: Distinct color palettes and SVG badges for Instagram, YouTube, and TikTok.
+- **Micro-Interactions & Animations**: Integrated **Framer Motion** for smooth page transitions, staggered card entrances, modal popovers, and drawer slide-overs.
+
+### 5. 🚀 Performance Optimizations
+- Applied `useMemo` hooks on `SearchPage.tsx` to memoize search indexing and filtering operations, preventing redundant re-computations during unrelated re-renders.
+- Implemented lazy image loading with automatic fallback avatar generation for broken profile images.
+
+---
+
+## 📦 Libraries Added
+
+| Library | Purpose & Rationale |
+| :--- | :--- |
+| `zustand` | Lightweight, un-opinionated state management with built-in persistence. Avoids Context provider boilerplate. |
+| `framer-motion` | High-performance animation library for fluid UI transitions, layout morphing, and interactive micro-animations. |
+| `lucide-react` | Modern, clean vector icon set for UI actions and status indicators. |
+| `clsx` & `tailwind-merge` | Utility tools for merging dynamic CSS classes cleanly. |
+
+*Note: The deprecated `react-beautiful-dnd` package was removed due to React 19 peer dependency incompatibilities.*
+
+---
+
+## 🛠️ Useful Commands
 
 ```bash
+# Install dependencies
 npm install
+
+# Start development server
 npm run dev
+
+# Run ESLint validation
+npm run lint
+
+# Create production build
+npm run build
 ```
 
-Open [http://localhost:5173](http://localhost:5173) to view the app.
+---
 
-## What's Included
+## 🧠 Assumptions & Trade-offs
 
-- **Search / Dashboard** — filter influencers by platform (Instagram, YouTube, TikTok) and search by username or full name
-- **Profile Details** — click a profile to view extended data loaded from individual JSON files
-- **Routing** — `react-router-dom` with `/` (search) and `/profile/:username` (details)
+- **Assumptions**:
+  - Local JSON datasets in `src/assets/data` act as mock backend endpoints.
+  - Creators can exist in multiple distinct custom lists simultaneously (e.g., "Tech" and "Campaign 2026"), but duplicate entries within a single list are strictly prevented.
+- **Trade-offs**:
+  - Selected client-side local storage persistence over a backend REST API server to keep the project self-contained and zero-dependency for deployment.
+  - Used custom inline SVGs for social platform branding badges to avoid third-party icon library version conflicts.
 
-Sample data lives in:
+---
 
-- `src/assets/data/search/` — platform search results (10 profiles each)
-- `src/assets/data/profiles/` — detailed profile JSON per username
+## 🔮 Future Enhancements
 
-## How to Submit
-
-1. **Download or clone** this starter project to your machine.
-2. **Create a new repository** on your own GitHub account. Do not fork the original assignment repo — push your work to a repo you own.
-3. Complete the tasks below and push your changes to that repository.
-4. **Share the public GitHub repository URL** with us as your submission.
-
-### Deadline (strict)
-
-- **Due:** **2 July 2026, 2:00 PM IST** (Indian Standard Time, UTC+5:30)
-- **Any git commits made after this deadline will disqualify your submission.** We will only consider the repository state as of the deadline; late commits will not be reviewed.
-- Make sure your final work is pushed **before** the cutoff.
-
-## AI Usage
-
-You may use any AI tools (Cursor, ChatGPT, Claude, GitHub Copilot, etc.). We are evaluating your final solution and engineering decisions.
-
-## Your Tasks
-
-Complete the following as part of your submission:
-
-1. **Find and fix all bugs and quality issues** — the codebase contains intentional bugs and quality issues. Identify and resolve them.
-
-2. **Completely redesign the UI/UX** — replace the basic layout with a polished, modern interface. Focus on usability, visual hierarchy, and delight.
-
-3. **Replace React Context with Zustand** — when you implement state management for the selected list, use [Zustand](https://github.com/pmndrs/zustand) instead of React Context.
-
-4. **Implement "Select profile & Add to List"** — the disabled "Add to List" button is a stub. Build the full feature:
-   - Select / add profiles to a persistent list
-   - View and manage the selected list
-   - Handle duplicates appropriately
-
-5. **Improve code quality and project structure** — refactor as needed, add proper types, and follow React best practices.
-
-6. **Optimize performance** — apply sensible optimizations where appropriate.
-
-7. **Use any libraries you need** — you are not limited to the current stack. Choose tools that help you deliver a great result (UI kits, state managers, testing libraries, etc.).
-
-## Scripts
-
-| Command        | Description              |
-| -------------- | ------------------------ |
-| `npm run dev`  | Start development server |
-| `npm run build`| Production build         |
-| `npm run lint` | Run ESLint               |
-
-## Submission Notes
-
-- Document any assumptions or trade-offs in your README
-- Ensure `npm run build` passes before submitting
-- Focus on demonstrating your judgment — not every possible feature needs to be built, but the core assignment items should be addressed thoughtfully
-- Double-check that your repo is public (or that we have access) and that the link is included in your submission
-- Please make meaningful commits throughout your work. We may review your commit history.
-- **Bonus:** Deploying the app (e.g. Vercel, Netlify, GitHub Pages) is optional but will be considered a plus — include the live URL in your submission if you do
-
-Good luck!
+- CSV/JSON exporting for curated influencer lists.
+- Advanced filtering options (by follower ranges, engagement thresholds, or demographics).
+- End-to-end testing suite using Playwright or Cypress.
